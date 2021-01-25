@@ -18,17 +18,17 @@ import comptoirs.dto.UnitesParProduit;
 public class StatisticsWebService {
 	@Autowired
 	private ProduitRepository dao;
-
 	/**
-	 * Unites vendues pour chaque produit d'une catégorie donnée. Pas d'utilisation
-	 * de DTO, renvoie simplement une liste de valeurs
-	 * 
+	 * Unites vendues pour chaque produit d'une catégorie donnée.
 	 * @param code le code de la catégorie à traiter
 	 * @return le nombre d'unités vendus pour chaque produit en format JSON
 	 */
-	@GetMapping(path = "unitesVenduesPourCategorie", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
-	public @ResponseBody List<UnitesParProduit> unitesVenduesPourCategorieV3(
+	@GetMapping(
+                path = "unitesVenduesPourCategorie", 
+                produces = { MediaType.APPLICATION_JSON_VALUE,
+			     MediaType.APPLICATION_XML_VALUE }
+        )
+	public @ResponseBody List<UnitesParProduit> unitesVenduesPourCategorie(
 			@RequestParam(required = true) final Integer code) {
 		return dao.produitsVendusPour(code);
 	}
