@@ -11,8 +11,8 @@
 	<groupId>io.github.bastide</groupId>
 	<artifactId>SpringAjax</artifactId>
 	<version>1.0</version>
-	<name>SpringAjax</name>
-	<description>Spring MVC + JPA sur la base 'comptoirs'</description>
+	<name>Exemples Spring - Ajax</name>
+	<description>Spring AJAX + JPA sur la base 'comptoirs'</description>
 
 	<properties>
 		<java.version>14</java.version>
