@@ -2,14 +2,13 @@ package comptoirs.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.http.MediaType;
 
 import comptoirs.dao.CategorieRepository;
 import comptoirs.entity.Categorie;
@@ -19,10 +18,13 @@ import comptoirs.exceptions.DuplicateException;
 @RequestMapping(path = "/comptoirs/simple") // chemin d'accès
 public class SimpleController {
 
-	@Autowired 
-	private CategorieRepository dao;
+	private final CategorieRepository dao;
 
-    /**
+	public SimpleController(CategorieRepository dao) {
+		this.dao = dao;
+	}
+
+	/**
      *
      * @return
      */

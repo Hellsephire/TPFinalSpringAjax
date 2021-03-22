@@ -1,10 +1,9 @@
 package comptoirs.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import comptoirs.dao.CategorieRepository;
 
@@ -12,9 +11,12 @@ import comptoirs.dao.CategorieRepository;
 @RequestMapping(path = "/comptoirs/stats") 
 public class StatsController {
 
-	@Autowired 
-	private CategorieRepository dao;
-	
+	private final CategorieRepository dao;
+
+	public StatsController(CategorieRepository dao) {
+		this.dao = dao;
+	}
+
 	@GetMapping(path = "produitsPourCategorie")
 	/**
 	 * Affiche la page des statistiques "unités vendues par produit

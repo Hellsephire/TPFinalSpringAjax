@@ -86,6 +86,24 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-hibernate5</artifactId>
 		</dependency>
+		<!-- Lombok pour générer automatiquement les getter / setter...  -->
+		<!-- cf. https://examples.javacodegeeks.com/spring-boot-with-lombok/ -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>				
+		<!-- on installe automatiquement bootstrap et jquery comme des dépendances Maven-->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.5.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
