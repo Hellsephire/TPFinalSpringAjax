@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ajax avec l'API fetch et Mustache</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <!-- On charge la bibliothèque JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- On charge le moteur de template mustache https://mustache.github.io/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+
+    <!-- Un petit script pour sérialiser un formulaire en JSON -->
+    <!-- cf. https://github.com/macek/jquery-serialize-object -->
+    <script src="./js/jquery.serialize-object.js"></script>
+
+    <script>
+        $(document).ready(// Exécuté à la fin du chargement de la page
+            function () {
+                chargeCategories();
+            }
+        );
+
+        // Afficher la liste des catégories avec un template
+        function afficheTableCategories(resultJson) {
+            afficheMessage("");
+            // Le code source du template est dans la page
+            var template = $('#categoriesTemplate').html();
+            // On combine le template avec le résultat de la requête
+            var processedTemplate = Mustache.to_html(template, resultJson);
+            // On affiche le résultat dans la page
+            $('#tableCategories').html(processedTemplate);
+        }
+
+        // Un appel AJAX GET pour chercher la liste des catégories
+        function chargeCategories() {
+            fetch("api/categories")
+                .then(response => response.json())
+                .then(json => afficheTableCategories(json))
+                .catch(error => afficheMessage(error));
+        }
+
+        // Afficher un message d'erreur
+        function afficheMessage(error) {
+            $("#message").html(error);
+        }
+
+        // Enregistrer une nouvelle catégorie
+        function ajouteCategorie() {
+            // On fait un appel POST pour enregistrer une nouvelle catégorie
+            // à partir des données saisies dans le formulaire
+            fetch("api/categories",
+                {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    // Transforme les données saisies dans le formulaire en format JSON
+                    body: $('#formulaire').serializeJSON()
+                })
+                .then(response => {
+                    // On vérifie le code de retour de la requête
+                    switch (response.status) {
+                        case 201: // Created: ça s'est bien passé
+                            // On recharge la liste des catégories
+                            chargeCategories();
+                            break;
+                        case 409: // Conflict: doublon dans les noms
+                            afficheMessage("Cette catégorie existe déjà");
+                            break;
+                    }
+                })
+                .catch(error => afficheMessage(error));
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Le formulaire de saisie -->
+    <form id="formulaire">
+        <label for="libelle">Libellé</label>
+        <input name="libelle" placeholder="Libellé de la catégorie"><br>
+        <label for="description">Description</label>
+        <textarea name="description" placeholder="Description de la catégorie"></textarea><br>
+        <button type="button" onclick="ajouteCategorie()">Ajouter</button>
+    </form>
+    <!-- Les messages d'erreur s'affichent ici -->
+    <div id="message"></div>
+    <!-- La table des catégories -->
+    <div id="tableCategories"></div>
+    <hr>
+
+    <a href="/">Retour au menu</a>
+
+    <!-- Le template Mustache qui sert à formatter la liste des catégories -->
+    <script id="categoriesTemplate" type="text/template">
+            <h2>Liste des catégories ({{content.length}} / {{page.totalElements}})</h2>
+            <TABLE>
+            {{! Un commentaire Mustache }}
+            <TR><TH>Code</TH><TH>Libelle</TH><TH>Description</TH></TR>
+            {{! Pour chaque categorie dans le tableau 'content' }}
+            {{#content}}
+            {{! Une ligne dans la table }}
+            <TR><TD>{{code}}</TD><TD>{{libelle}}</TD><TD>{{description}}</TD></TR>
+            {{/content}}
+            </TABLE>
+        </script>
+</body>
+
+</html>

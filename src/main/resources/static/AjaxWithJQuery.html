@@ -8,6 +8,7 @@
 		<script>
 			$(document).ready(// Exécuté à la fin du chargement de la page
 				function () {
+					$("#waiting").hide();
 					// Quand on clique sur le bouton doAjax, on exécute la fonction doRequest
 					$("#doAjax").click(doRequest);
 				}
@@ -20,7 +21,8 @@
 					success: showResult,
 					error: showError
 				});
-				$("#demo").html("Requête en cours...");
+				$("#demo").hide();
+				$("#waiting").show();
 				// On désactive le bouton pour éviter de faire plusieurs appels en même temps
 				$("#doAjax").prop("disabled", true);
 
@@ -28,6 +30,8 @@
 
 			// Fonction qui traite les résultats de la requête
 			function showResult(result) {
+				$("#demo").show();
+				$("#waiting").hide();				
 				// On affiche le résultat
 				$("#demo").html(result);
 				// On réactive le bouton
@@ -44,6 +48,7 @@
 	<body>
 		<h1>AJAX / JQuery / Requête longue</h1>
 		<button id="doAjax">Exécuter la requête AJAX</button><br>
+		<img id="waiting" src="images/ajax-loader2.gif" alt="Waiting...">
 		<textarea id="demo" rows="3" cols="40">Le résultat apparaîtra ici</textarea>
 		<hr>
 		<a href="./">Retour au menu</a>				

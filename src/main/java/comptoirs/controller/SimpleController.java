@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,8 +26,8 @@ public class SimpleController {
 	}
 
 	/**
-     *
-     * @return
+     * Un contrôleur qui génère du HTML "à la main"
+     * @return un fragment de HTML qui montre le nombre de catégories dans la base
      */
     @GetMapping(path = "combien", 
 		produces = MediaType.TEXT_HTML_VALUE) // pas de vue , génère directement du HTML
@@ -35,8 +36,8 @@ public class SimpleController {
 	}	
 	
     /**
-     *
-     * @return
+     * Un contrôleur qui renvoie une liste d'entités
+     * @return la liste des catégories
      */
     @GetMapping(path = "list")
 	public @ResponseBody List<Categorie> getAll() {
@@ -45,16 +46,14 @@ public class SimpleController {
 	}	
 	
     /**
-     *
-     * @param libelle
-     * @param description
-     * @return
-     * @throws DuplicateException
+     * Ajoute une nouvelle catégorie par POST ou GET
+     * @param libelle le libellé de la nouvelle catégorie
+     * @param description la description de la nouvelle catégorie
+     * @return la catégorie nouvellement créée, avec sa clé auto-générée
+     * @throws DuplicateException si le libellé existe déjà
      */
-    @RequestMapping(path = "ajouter") // Map GET and POST Requests
-	// @ResponseBody means the returned String is the response, not a view name
+    @RequestMapping(path = "ajouter", method = {RequestMethod.GET, RequestMethod.POST}) 
 	public @ResponseBody Categorie addNew( 
-			// @RequestParam means it is a parameter from the GET or POST request		
 			@RequestParam(required = true) final String libelle,
 			@RequestParam(defaultValue = "Description non fournie") final String description
 	) throws DuplicateException {
