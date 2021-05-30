@@ -10,8 +10,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
 
-@Configuration
-@Import(SpringDataRestConfiguration.class)
+// @Configuration
+// @Import(SpringDataRestConfiguration.class)
 public class SpringFoxConfig {                                    
     @Bean
     public Docket api() { 
